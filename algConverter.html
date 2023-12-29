@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
+    <title>Algorithm Converter</title>
+    <style>
+        body {
+            font-family: "Nunito", sans-serif;
+            text-align: left;
+
+            margin: 200px;
+            margin-top: 5%;
+        }
+
+        textarea {
+            width: 80%;
+            height: 100px;
+            font-family: "Nunito", sans-serif;
+            font-size: 20px;
+        }
+
+        button {
+            position: sticky;
+            margin-top: 0px;
+            margin: 10px;
+            padding: 7px 16px;
+            font-family: "Nunito", sans-serif;
+            font-size: 18px;
+        }
+
+        .box{
+            position: absolute;
+            margin-left: 150px;
+            margin-right: 150px;
+            margin-top:20px;
+            display: inline-block;
+            z-index: 0;
+        }
+
+        .copybutton {
+            padding: 2px 0px;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        .result {
+            font-family: "Nunito", sans-serif;
+            font-size: 20px;
+            text-align: left;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Megaminx Algorithm Converter</h2>
+
+    <textarea id="algorithmInput" placeholder="Paste your algorithm here"></textarea><br>
+
+    <div class="box">
+        <button  onclick="convertMirror()">mirror</button>
+        <button  onclick="convertInverse()">inverse</button>
+        <button  onclick="convertFrontback()">front/back</button>
+        <button class="copybutton" id="button" onclick="copyResult()"></button>
+    </div>
+
+    <p class="result" id="convertedResult"></p>
+
+
+
+    <script type="text/javascript">
+        var buttons = document.getElementById("button");
+        buttons.innerHTML = '<img src="copy-icon.png" />';
+    </script>
+
+    <script>
+        function ftob(input) {
+            var notation_dict = {
+                'U': 'U\'',
+                'U\'': 'U',
+                'U2': 'U2\'',
+                'U2\'': 'U2',
+                'L': 'L\'',
+                'L\'': 'L',
+                'R': 'R\'',
+                'R\'': 'R',
+                'L2': 'L2\'',
+                'L2\'': 'L2',
+                'R2': 'R2\'',
+                'R2\'': 'R2',
+                'F': 'B\'',
+                'F\'': 'B',
+                'F2': 'B2\'',
+                'F2\'': 'B2',
+                'y\'': 'y2\'',
+                'y': 'y',
+                'y2': ' ',
+                'y2\'': 'y\'',
+                'no_auf' : 'y2'
+            };
+
+            var input_list = input.split(' ');
+            if (input_list[0] !== 'y' && input_list[0] !== 'y\'' && input_list[0] !== 'y2' && input_list[0] !== 'y2\'') {
+                input_list.unshift('no_auf');}
+
+            var converted_list = input_list.map(function (i) {
+                return notation_dict[i] || i;
+            });
+
+            return converted_list.join(' ');
+        }
+        //mirror
+        function mirror(input) {
+            var notation_dict = {
+                'U': 'U\'',
+                'U\'': 'U',
+                'U2': 'U2\'',
+                'U2\'': 'U2',
+                'L': 'R\'',
+                'L\'': 'R',
+                'R': 'L\'',
+                'R\'': 'L',
+                'L2': 'R2\'',
+                'L2\'': 'R2',
+                'R2': 'L2\'',
+                'R2\'': 'L2',
+                'F': 'F\'',
+                'F\'': 'F',
+                'F2': 'F2\'',
+                'F2\'': 'F2',
+                'y': 'y\'',
+                'y\'': 'y',
+                'y2': 'y2\'',
+                'y2\'': 'y2'
+                
+            };
+
+            var input_list = input.split(' ');
+            var converted_list = input_list.map(function (i) {
+                return notation_dict[i] || i;
+            });
+
+            return converted_list.join(' ');
+        }
+        //inverse
+        function inverse(input) {
+            var notation_dict = {
+                'U': 'U\'',
+                'U\'': 'U',
+                'U2': 'U2\'',
+                'U2\'': 'U2',
+                'L': 'L\'',
+                'L\'': 'L',
+                'R': 'R\'',
+                'R\'': 'R',
+                'L2': 'L2\'',
+                'L2\'': 'L2',
+                'R2': 'R2\'',
+                'R2\'': 'R2',
+                'F': 'F\'',
+                'F\'': 'F',
+                'F2': 'F2\'',
+                'F2\'': 'F2',
+                'y': 'y\'',
+                'y\'': 'y',
+                'y2': 'y2\'',
+                'y2\'': 'y2'
+                
+            };
+
+            var input_list = input.split(' ');
+            input_list.reverse();
+            var converted_list = input_list.map(function (i) {
+                return notation_dict[i] || i;
+            });
+
+            return converted_list.join(' ');
+        }
+
+        //convert button
+        function convertFrontback() {
+            var input = document.getElementById('algorithmInput').value;
+            var result = ftob(input);
+            document.getElementById('convertedResult').innerText = result;
+        }
+        function convertMirror() {
+            var input = document.getElementById('algorithmInput').value;
+            var result = mirror(input);
+            document.getElementById('convertedResult').innerText = result;
+        }
+        function convertInverse() {
+            var input = document.getElementById('algorithmInput').value;
+            var result = inverse(input);
+            document.getElementById('convertedResult').innerText = result;
+        }
+
+        //copy button
+        function copyResult() {
+            var resultElement = document.getElementById('convertedResult');
+            var resultText = resultElement.innerText;
+
+            // temporary textarea element
+            var tempTextarea = document.createElement('textarea');
+            tempTextarea.value = resultText;
+            document.body.appendChild(tempTextarea);
+
+            // select the text in the textarea
+            tempTextarea.select();
+
+            // copy
+            document.execCommand('copy');
+
+            document.body.removeChild(tempTextarea);
+        }
+    </script>
+
+</body>
+</html>
